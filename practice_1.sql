@@ -173,8 +173,50 @@ select * from datetime_test;
 create table year_test(
     column_1 year
 );
--- date—  range: 1901 to 2155
+-- year—  range: 1901 to 2155
 insert into year_test (column_1) values (2025);
 insert into year_test (column_1) values (1901), (2155);
 
 select * from year_test;
+
+
+
+create table timestamp_test1(
+    column_1 timestamp
+);
+
+-- timestamp—  range: '1970-01-01 00:00:01' UTC to '2038-01-09 03:14:07' UTC
+
+insert into timestamp_test1 (column_1) values ("2024-06-17 22:14:00");
+
+select * from timestamp_test1;
+
+
+
+create table timestamp_test2(
+    column_1 int,
+    column_2 timestamp default current_timestamp
+);
+
+insert into timestamp_test2 (column_1) values (1);
+
+select * from timestamp_test2;
+
+set sql_safe_updates=0;
+update timestamp_test2 set column_1=2 where column_1=1;
+
+
+
+create table timestamp_test3(
+    column_1 int,
+    column_2 varchar(50),
+    column_3 timestamp default current_timestamp on update current_timestamp
+);
+
+insert into timestamp_test3 (column_1, column_2) values (100, "rasel");
+insert into timestamp_test3 (column_1, column_2) values (101, "Pakhi");
+
+select * from timestamp_test3;
+
+update timestamp_test3 set column_1=101 where column_1=102;
+update timestamp_test3 set column_1=102 where column_2="Pakhi";
